@@ -1,0 +1,5 @@
+package etec.pc.projeto.persistence;
+
+public class PessoaDao {
+
+}

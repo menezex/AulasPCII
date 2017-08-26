@@ -1,0 +1,79 @@
+package etec.pc.projetopcii;
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import etec.pc.projeto.model.UsuarioSistema;
+
+import etec.pc.projeto.persistence.Conexao;
+import etec.pc.projeto.swing.view.Painel;
+
+public class App 
+
+{
+	private static String versao = "v1.0";
+	private List<UsuarioSistema> userCadastrados = new ArrayList<UsuarioSistema>();
+	private List<UsuarioSistema> userLogados = new ArrayList<UsuarioSistema>();
+	private UsuarioSistema usuarioLogado;
+	
+	public App(){ 
+		this.userCadastrados.add(new UsuarioSistema("Administrador","admin","123456"));
+		this.showPanelLogin();
+	}
+	
+	public void showPanelLogin(){
+		JFrame jFrame = new JFrame("Interface Principal");
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		jFrame.add(new Painel(this));
+		jFrame.pack();
+		jFrame.setVisible(true);		
+	}
+	
+	public List<UsuarioSistema> getUsuariosCadastrados(){
+		return userCadastrados;
+	}
+	
+	public UsuarioSistema getUsuarioLogado() {
+		return usuarioLogado;
+	}	
+	
+	public void setUserLogado(UsuarioSistema userLogado){
+		this.userLogados = userLogados;
+	}
+	public List<UsuarioSistema> getUsuariosLogados() {
+		return userLogados;
+	}
+
+	public void setUsuariosLogados(List<UsuarioSistema> usuariosLogados) {
+		this.userLogados = userLogados;
+	}
+	
+	
+	public static void main( String[] args )throws Exception 
+    {
+        Connection com = new Conexao().getMysqlConnection();
+        System.out.println(com);
+        
+        
+        Connection conn =  new Conexao().getMysqlConnection();
+        String sql = "insert into alunos (nomeAluno) values ('Gabriel Menezes')";
+        
+        PreparedStatement stn = conn.prepareStatement(sql);
+        stn.executeUpdate();
+        
+        Statement stmz = conn.createStatement();
+        
+        ResultSet rs = stmz.executeQuery("Select * from alunos");
+        
+        while (rs.next()){
+        	System.out.println(rs.getString("nomeAluno"));
+        }
+    }
+}
